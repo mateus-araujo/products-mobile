@@ -1,0 +1,38 @@
+{
+  "extends": [
+    "@react-native-community"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "eslint-plugin-import-helpers"
+  ],
+  "rules": {
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        "groups": [
+          "/^react/",
+          "/^@/",
+          "module",
+          "/^assets/",
+          "/^components/",
+          "/^screens/",
+          [
+            "/^lib/",
+            "/^services/",
+            "/^store/",
+            "/^styles/"
+          ],
+          "parent",
+          "sibling",
+          "index"
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ]
+  }
+}
