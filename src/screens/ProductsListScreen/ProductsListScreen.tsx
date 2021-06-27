@@ -1,18 +1,28 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
 import { EmptyListMessage, ProductItem } from 'components';
 
 import { useFetch } from 'lib/hooks';
 import { Separator, ScreenContainer } from 'lib/styles/common';
-import { Product } from 'lib/types';
+import { NavigationRoutes, Product } from 'lib/types';
 
 export default function ProductsListScreen() {
+  const navigation = useNavigation();
+
   const {
     data: products,
     loading,
     revalidate,
   } = useFetch<Product[]>('/products');
+
+  function onProductPress(productId: string) {
+    navigation.navigate(NavigationRoutes.PRODUCT_DETAILS, {
+      productId: productId,
+    });
+  }
 
   return (
     <ScreenContainer>
@@ -27,7 +37,9 @@ export default function ProductsListScreen() {
           />
         }
         ItemSeparatorComponent={() => <Separator />}
-        renderItem={({ item }) => <ProductItem product={item} />}
+        renderItem={({ item }) => (
+          <ProductItem product={item} onPress={() => onProductPress(item.id)} />
+        )}
       />
     </ScreenContainer>
   );

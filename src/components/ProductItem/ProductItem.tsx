@@ -2,10 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { formatCurrency } from 'lib/helpers';
+import { CardItemContainer } from 'lib/styles/common';
 import { Product } from 'lib/types';
 
 import {
-  ProductItemContainer,
   ProductItemTitle,
   ProductItemSubtitle,
   ProductItemPrice,
@@ -13,16 +13,17 @@ import {
 
 export interface Props {
   product: Product;
+  onPress(): void;
 }
 
-export default function ProductItem({ product }: Props) {
+export default function ProductItem({ product, onPress }: Props) {
   return (
-    <ProductItemContainer>
+    <CardItemContainer onPress={onPress}>
       <View>
         <ProductItemTitle>{product.name}</ProductItemTitle>
         <ProductItemSubtitle>Quantity: {product.quantity}</ProductItemSubtitle>
       </View>
       <ProductItemPrice>{formatCurrency(product.price)}</ProductItemPrice>
-    </ProductItemContainer>
+    </CardItemContainer>
   );
 }

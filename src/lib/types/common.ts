@@ -6,3 +6,10 @@ export interface Product {
   created_at: string;
   updated_at: string;
 }
+
+export interface ProductHistoryEntry {
+  product_id: string;
+  quantity: number;
+  created_at: string;
+  updated_at: string;
+}
