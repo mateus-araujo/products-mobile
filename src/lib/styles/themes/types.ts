@@ -16,8 +16,9 @@ export type AppTheme = {
       smallest: string;
       small: string;
       regular: string;
-      big: string;
-      biggest: string;
+      medium: string;
+      large: string;
+      largest: string;
     };
   };
 };
