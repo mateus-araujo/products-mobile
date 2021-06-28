@@ -1,8 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { Alert, ToastAndroid, Modal } from 'react-native';
-
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -15,9 +12,8 @@ import {
 } from 'components';
 
 import { getFormFieldError, setFormFieldErrors } from 'lib/helpers';
-import { useFetch } from 'lib/hooks';
 import api from 'lib/services/api';
-import { NavigationRoutes, Product, RootStackParamList } from 'lib/types';
+import { Product } from 'lib/types';
 
 import {
   ModalBackground,
@@ -26,49 +22,49 @@ import {
   ModalHeaderTitle,
 } from './ProductBulkUpdateModal.styles';
 
-export default function ProductBulkUpdateModal() {
-  const { navigate, setOptions } = useNavigation();
-  const { params } = useRoute<RouteProp<RootStackParamList, 'ProductForm'>>();
+interface Props {
+  onClose(): void;
+  productsSelected: Product[];
+  visible: boolean;
+}
 
-  useEffect(() => {
-    setOptions({
-      title: params?.productId ? 'Update product' : 'Create Product',
-    });
-  }, [params, setOptions]);
-
+export default function ProductBulkUpdateModal({
+  onClose,
+  productsSelected,
+  visible,
+}: Props) {
   const {
     errors,
     handleSubmit,
     isSubmitting,
     isValid,
     setFieldValue,
-    setValues,
     touched,
     values,
   } = useFormik({
     initialValues: {
-      name: '',
       quantity: '',
       price: 0,
     },
     validationSchema: Yup.object().shape({
-      name: Yup.string().trim().required(),
       quantity: Yup.number().min(0, 'Min value is 0').required(),
       price: Yup.number().min(0, 'Min value is 0').required(),
     }),
-    onSubmit: async (values, { setSubmitting, setFieldError }) => {
+    onSubmit: async (values, { resetForm, setSubmitting, setFieldError }) => {
       try {
         setSubmitting(true);
 
-        if (params?.productId) {
-          await api.put(`/product/${params.productId}`, values);
-        } else {
-          await api.post('/product', values);
-        }
+        await api.post('/products/bulk/update', {
+          products: productsSelected.map((product) => ({
+            ...product,
+            quantity: values.quantity,
+            price: values.price,
+          })),
+        });
 
-        ToastAndroid.show('Product saved with success', ToastAndroid.LONG);
-
-        navigate(NavigationRoutes.PRODUCTS_LIST);
+        ToastAndroid.show('Products saved with success', ToastAndroid.LONG);
+        resetForm();
+        onClose();
       } catch (error) {
         if (error.response.status !== 422) {
           Alert.alert('Error on save ', 'Error saving changes');
@@ -83,19 +79,6 @@ export default function ProductBulkUpdateModal() {
     },
   });
 
-  const { loading } = useFetch<Product>(
-    params?.productId ? `/product/${params.productId}` : null,
-    {
-      onSuccess: (product) => {
-        setValues({
-          name: product.name,
-          quantity: product.quantity.toString(),
-          price: product.price,
-        });
-      },
-    }
-  );
-
   function handleInputChange<ValueType>(field: string) {
     return (value: ValueType) => {
       //  const formattedValue = value || typeof value === 'number' ? 0 : '';
@@ -105,8 +88,8 @@ export default function ProductBulkUpdateModal() {
   }
 
   return (
-    <Modal visible={true} transparent={true}>
-      <ModalLoading loading={isSubmitting || loading} />
+    <Modal visible={visible} transparent={true} onRequestClose={onClose}>
+      <ModalLoading loading={isSubmitting} />
       <ModalBackground>
         <ModalContentContainer>
           <ModalHeaderContainer>

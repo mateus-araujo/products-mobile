@@ -26,6 +26,7 @@ export default function ProductsListScreen() {
   const [loadingRemove, setLoadingRemove] = useState(false);
   const [productsSelected, setProductsSelected] = useState<Product[]>([]);
   const [isSelectionEnabled, setSelectionEnabled] = useState(false);
+  const [isUpdateModalVisible, setUpdateModalVisible] = useState(false);
 
   const {
     data: products,
@@ -75,6 +76,13 @@ export default function ProductsListScreen() {
     );
   }
 
+  function handleCloseBulkUpdateModal() {
+    setProductsSelected([]);
+    setSelectionEnabled(false);
+    setUpdateModalVisible(false);
+    revalidate();
+  }
+
   useEffect(() => {
     if (!isSelectionEnabled) {
       setProductsSelected([]);
@@ -85,7 +93,11 @@ export default function ProductsListScreen() {
     <ScreenContainer>
       <ModalLoading loading={loading || loadingRemove} />
 
-      <ProductBulkUpdateModal />
+      <ProductBulkUpdateModal
+        visible={isUpdateModalVisible}
+        onClose={handleCloseBulkUpdateModal}
+        productsSelected={productsSelected}
+      />
 
       {productsSelected?.length === 1 && (
         <CustomButton
@@ -94,7 +106,11 @@ export default function ProductsListScreen() {
         />
       )}
       {productsSelected?.length > 1 && (
-        <CustomButton label="Update products" type="outline" />
+        <CustomButton
+          label="Update products"
+          type="outline"
+          onPress={() => setUpdateModalVisible(true)}
+        />
       )}
 
       <FlatList

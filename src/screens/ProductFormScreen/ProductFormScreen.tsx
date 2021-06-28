@@ -21,7 +21,7 @@ import { ScreenContainer } from 'lib/styles/common';
 import { NavigationRoutes, Product, RootStackParamList } from 'lib/types';
 
 export default function ProductFormScreen() {
-  const { isFocused, navigate, setOptions } = useNavigation();
+  const { isFocused, reset, setOptions } = useNavigation();
   const { params } = useRoute<RouteProp<RootStackParamList, 'ProductForm'>>();
 
   useEffect(() => {
@@ -62,7 +62,10 @@ export default function ProductFormScreen() {
 
         ToastAndroid.show('Product saved with success', ToastAndroid.LONG);
 
-        navigate(NavigationRoutes.PRODUCTS_LIST);
+        reset({
+          index: 0,
+          routes: [{ name: NavigationRoutes.PRODUCTS_LIST }],
+        });
       } catch (error) {
         if (error.response.status !== 422) {
           Alert.alert('Error on save ', 'Error saving changes');
