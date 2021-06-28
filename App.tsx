@@ -7,7 +7,7 @@ import { themes } from 'lib/styles';
 
 export default function App() {
   return (
-    <ThemeProvider theme={themes.lightTheme}>
+    <ThemeProvider theme={themes.darkTheme}>
       <Navigation />
     </ThemeProvider>
   );

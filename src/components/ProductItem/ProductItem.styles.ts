@@ -1,6 +1,11 @@
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import styled from 'styled-components';
+
+export const ProductItemContent = styled(View)`
+  flex-direction: row;
+  align-items: center;
+`;
 
 export const ProductItemTitle = styled(Text)`
   color: ${({ theme }) => theme.colors.darkGray};

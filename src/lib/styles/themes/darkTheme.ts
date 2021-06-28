@@ -7,6 +7,7 @@ declare module 'styled-components' {
 }
 
 const darkTheme: DefaultTheme = {
+  title: 'dark',
   colors: {
     primary: '#11bcaa',
     lightPrimary: '#4dd8d0',

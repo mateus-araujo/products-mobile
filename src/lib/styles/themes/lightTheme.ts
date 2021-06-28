@@ -7,6 +7,7 @@ declare module 'styled-components' {
 }
 
 const lightTheme: DefaultTheme = {
+  title: 'light',
   colors: {
     primary: '#11bcaa',
     lightPrimary: '#4dd8d0',

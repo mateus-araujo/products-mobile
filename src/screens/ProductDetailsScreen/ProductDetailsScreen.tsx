@@ -1,14 +1,24 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import { CustomButton, EmptyListMessage, ProductHistoryItem } from 'components';
+import {
+  CustomButton,
+  EmptyListMessage,
+  ModalLoading,
+  ProductHistoryItem,
+} from 'components';
 
 import { formatCurrency } from 'lib/helpers';
 import { useFetch } from 'lib/hooks';
 import { Separator, ScreenContainer } from 'lib/styles/common';
-import { Product, ProductHistoryEntry, RootStackParamList } from 'lib/types';
+import {
+  NavigationRoutes,
+  Product,
+  ProductHistoryEntry,
+  RootStackParamList,
+} from 'lib/types';
 
 import {
   DetailsContainer,
@@ -20,17 +30,28 @@ import {
 } from './ProductDetailsScreen.styles';
 
 export default function ProductDetailsScreen() {
+  const navigation = useNavigation();
   const { params } =
     useRoute<RouteProp<RootStackParamList, 'ProductDetails'>>();
 
-  const { data: product } = useFetch<Product>(`/product/${params.productId}`);
+  const { data: product, loading } = useFetch<Product>(
+    `/product/${params.productId}`
+  );
 
   const productHistory = useFetch<ProductHistoryEntry[]>(
     `/product/${params.productId}/history`
   );
 
+  function onUpdatePress() {
+    navigation.navigate(NavigationRoutes.PRODUCT_FORM, {
+      productId: product?.id,
+    });
+  }
+
   return (
     <ScreenContainer>
+      <ModalLoading loading={loading || productHistory.loading} />
+
       {product && (
         <DetailsContainer>
           <DetailsItemContainer>
@@ -50,7 +71,13 @@ export default function ProductDetailsScreen() {
         </DetailsContainer>
       )}
 
-      <CustomButton label="Update product" type="default" />
+      {product?.id && (
+        <CustomButton
+          label="Update product"
+          type="default"
+          onPress={onUpdatePress}
+        />
+      )}
 
       <FlatList
         data={productHistory.data}

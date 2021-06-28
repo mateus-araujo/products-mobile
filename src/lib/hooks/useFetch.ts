@@ -21,7 +21,7 @@ export function useFetch<Data, Error = AxiosError>(
       : url,
     {
       ...config,
-      revalidateOnFocus: config?.revalidateOnFocus || false,
+      revalidateOnFocus: true,
       shouldRetryOnError: false,
       fetcher:
         config?.fetcher ||
@@ -36,7 +36,7 @@ export function useFetch<Data, Error = AxiosError>(
   );
 
   return {
-    loading: (!error && !data) || isValidating,
+    loading: isValidating,
     data: data,
     error,
     mutate,
