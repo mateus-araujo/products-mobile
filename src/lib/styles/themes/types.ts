@@ -1,4 +1,5 @@
 export type AppTheme = {
+  title: 'dark' | 'light';
   colors: {
     primary: string;
     lightPrimary: string;
@@ -16,8 +17,9 @@ export type AppTheme = {
       smallest: string;
       small: string;
       regular: string;
-      big: string;
-      biggest: string;
+      medium: string;
+      large: string;
+      largest: string;
     };
   };
 };

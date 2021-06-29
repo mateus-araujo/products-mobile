@@ -19,10 +19,7 @@
           "/^components/",
           "/^screens/",
           [
-            "/^lib/",
-            "/^services/",
-            "/^store/",
-            "/^styles/"
+            "/^lib/"
           ],
           "parent",
           "sibling",
@@ -33,6 +30,7 @@
           "ignoreCase": true
         }
       }
-    ]
+    ],
+    "no-shadow": "off"
   }
 }

@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Navigation } from 'navigation';
 import { ThemeProvider } from 'styled-components';
 
-import { darkTheme } from 'styles/themes';
+import { Navigation } from 'lib/navigation';
+import { themes } from 'lib/styles';
 
 export default function App() {
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={themes.darkTheme}>
       <Navigation />
     </ThemeProvider>
   );
