@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tbnb-mobile-test",
-    "slug": "tbnb-mobile-test",
+    "name": "products-tbnb",
+    "slug": "products-tbnb",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
