@@ -15,7 +15,7 @@ export const ModalContentContainer = styled(View)`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 16px;
-  height: 325px;
+  height: 350px;
   width: 300px;
 `;
 

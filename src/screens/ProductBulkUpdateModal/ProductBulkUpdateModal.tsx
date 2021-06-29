@@ -121,6 +121,7 @@ export default function ProductBulkUpdateModal({
             type={isValid ? 'default' : 'disabled'}
             onPress={handleSubmit}
           />
+          <CustomButton label="Cancel" type="outline" onPress={onClose} />
         </ModalContentContainer>
       </ModalBackground>
     </Modal>
